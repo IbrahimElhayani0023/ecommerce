@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Pest\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -14,18 +15,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Inertia::render('categories/index', [
+        return Inertia::render('dashboard/categories/index', [
             'categories' => Category::all(),
         ]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    // public function create()
-    // {
-    //     //
-    // }
 
     /**
      * Store a newly created resource in storage.
@@ -34,18 +27,18 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:categories',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'is_active' => 'boolean',
         ]);
+        $validated['slug'] = Str::slugify($request->name);
         if ($request->hasFile('image')) {
             $imagePath = Storage::disk('public')->put('categories', $request->file('image'));
             $validated['image'] = $imagePath;
         }
         Category::create($validated);
 
-        return redirect()->route('categories.index')->with('success', 'Category created successfully');
+        return redirect()->back()->with('success', 'Category created successfully');
     }
 
     /**
@@ -53,18 +46,10 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return Inertia::render('Categories/Show', [
+        return Inertia::render('dashboard/categories/show', [
             'category' => $category->load('products'),
         ]);
     }
-
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  */
-    // public function edit(Category $category)
-    // {
-    //     // 
-    // }
 
     /**
      * Update the specified resource in storage.
@@ -87,7 +72,7 @@ class CategoryController extends Controller
         }
         $category->update($validated);
 
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully');
+        return redirect()->back()->with('success', 'Category updated successfully');
     }
 
     /**
@@ -100,6 +85,6 @@ class CategoryController extends Controller
         }
         $category->delete();
 
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully');
+        return redirect()->back()->with('success', 'Category deleted successfully');
     }
 }

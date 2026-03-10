@@ -14,7 +14,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return Inertia::render('orders/index', [
+        return Inertia::render('dashboard/orders/index', [
             'orders' => Order::paginate(12),
         ]);
     }
@@ -24,7 +24,7 @@ class OrderController extends Controller
      */
     public function create()
     {
-        return Inertia::render('orders/create');
+        return Inertia::render('dashboard/orders/create');
     }
 
     /**
@@ -57,7 +57,7 @@ class OrderController extends Controller
             ]);
         }
 
-        return redirect()->route('orders.index')->with('success', 'Order created successfully');
+        return redirect()->route('dashboard.orders.index')->with('success', 'Order created successfully');
     }
 
     /**
@@ -65,7 +65,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        return Inertia::render('orders/show', [
+        return Inertia::render('dashboard/orders/show', [
             'order' => $order->load('items.product'),
         ]);
     }
@@ -75,7 +75,7 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        return Inertia::render('orders/edit', [
+        return Inertia::render('dashboard/orders/edit', [
             'order' => $order->load('items.product'),
         ]);
     }
@@ -109,7 +109,7 @@ class OrderController extends Controller
             ]);
         }
 
-        return redirect()->route('orders.index')->with('success', 'Order updated successfully');
+        return redirect()->route('dashboard.orders.index')->with('success', 'Order updated successfully');
     }
 
     /**
@@ -119,6 +119,6 @@ class OrderController extends Controller
     {
         $order->delete();
 
-        return redirect()->route('orders.index')->with('success', 'Order deleted successfully');
+        return redirect()->route('dashboard.orders.index')->with('success', 'Order deleted successfully');
     }
 }

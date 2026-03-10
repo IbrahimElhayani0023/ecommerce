@@ -14,7 +14,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Inertia::render('products/index', [
+        return Inertia::render('dashboard/products/index', [
             'products' => Product::paginate(12),
         ]);
     }
@@ -24,7 +24,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return Inertia::render('products/create');
+        return Inertia::render('dashboard/products/create');
     }
 
     /**
@@ -48,7 +48,7 @@ class ProductController extends Controller
         }
         Product::create($validated);
 
-        return redirect()->route('products.index')->with('success', 'Product created successfully');
+        return redirect()->route('dashboard.products.index')->with('success', 'Product created successfully');
     }
 
     /**
@@ -56,7 +56,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return Inertia::render('products/show', [
+        return Inertia::render('dashboard/products/show', [
             'product' => $product->load('category'),
         ]);
     }
@@ -66,7 +66,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return Inertia::render('products/edit', [
+        return Inertia::render('dashboard/products/edit', [
             'product' => $product,
         ]);
     }
@@ -95,7 +95,7 @@ class ProductController extends Controller
         }
         $product->update($validated);
 
-        return redirect()->route('products.index')->with('success', 'Product updated successfully');
+        return redirect()->route('dashboard.products.index')->with('success', 'Product updated successfully');
     }
 
     /**
@@ -108,6 +108,6 @@ class ProductController extends Controller
         }
         $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully');
+        return redirect()->route('dashboard.products.index')->with('success', 'Product deleted successfully');
     }
 }
